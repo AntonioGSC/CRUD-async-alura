@@ -12,10 +12,23 @@ const criaNovaLinha = (nome, email, id) => {
               </ul>
           </td>`;
   linhaNovoCliente.innerHTML = conteudo;
+  linhaNovoCliente.dataset.id = id;
   return linhaNovoCliente;
 };
 
 const tabela = document.querySelector('[data-tabela]');
+
+tabela.addEventListener('click', (event) => {
+  const botaoDeletar = (event.target.className =
+    'botao-simples botao-simples--excluir');
+  if (botaoDeletar) {
+    const linhaCliente = event.target.closest('[data-id]');
+    const id = linhaCliente.dataset.id;
+    clienteService.deletaCliente(id).then(() => {
+      linhaCliente.remove();
+    });
+  }
+});
 
 clienteService.listaClientes().then((data) => {
   data.forEach((cliente) => {
