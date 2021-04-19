@@ -25,10 +25,33 @@ const deletaCliente = (id) => {
   });
 };
 
+const buscaCliente = (id) => {
+  return fetch(`http://localhost:3000/profile/${id}`).then((res) => {
+    return res.json();
+  });
+};
+
+const atualizaCliente = (id, nome, email) => {
+  return fetch(`http://localhost:3000/profile/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      nome,
+      email,
+    }),
+  }).then((res) => {
+    return res.body;
+  });
+};
+
 export const clienteService = {
   listaClientes,
   criaCliente,
   deletaCliente,
+  buscaCliente,
+  atualizaCliente,
 };
 
 // const promise = new Promise((resolve, reject) => {
