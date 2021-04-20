@@ -18,20 +18,22 @@ const criaNovaLinha = (nome, email, id) => {
 
 const tabela = document.querySelector('[data-tabela]');
 
-tabela.addEventListener('click', (event) => {
+tabela.addEventListener('click', async (event) => {
   const botaoDeletar =
     event.target.className === 'botao-simples botao-simples--excluir';
   if (botaoDeletar) {
     const linhaCliente = event.target.closest('[data-id]');
     const id = linhaCliente.dataset.id;
-    clienteService.deletaCliente(id).then(() => {
-      linhaCliente.remove();
-    });
+    await clienteService.deletaCliente(id);
+    linhaCliente.remove();
   }
 });
 
-clienteService.listaClientes().then((data) => {
-  data.forEach((cliente) => {
+const render = async () => {
+  const clienteServiceData = await clienteService.listaClientes();
+  clienteServiceData.forEach((cliente) => {
     tabela.appendChild(criaNovaLinha(cliente.nome, cliente.email, cliente.id));
   });
-});
+};
+
+render();
